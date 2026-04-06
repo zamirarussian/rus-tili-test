@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Русский тест — Даражангизни аниқланг</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#0d0d0f;--surface:#16161a;--card:#1c1c22;--border:#2a2a35;
+    --accent:#e8c547;--accent2:#c4a032;--text:#f0ede6;--muted:#7a7a90;
+    --success:#4ade80;--danger:#f87171;
+    --A1:#64b5f6;--A2:#4dd0e1;--B1:#81c784;--B2:#ffb74d;--C1:#f06292;--C2:#ce93d8;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Manrope',sans-serif;min-height:100vh;overflow-x:hidden;}
+  body::before{content:'';position:fixed;top:-50%;left:-50%;width:200%;height:200%;
+    background:radial-gradient(ellipse at 20% 20%,rgba(232,197,71,.04) 0%,transparent 50%),
+    radial-gradient(ellipse at 80% 80%,rgba(100,181,246,.04) 0%,transparent 50%);
+    animation:bgShift 20s ease-in-out infinite alternate;pointer-events:none;z-index:0;}
+  @keyframes bgShift{0%{transform:translate(0,0) rotate(0deg);}100%{transform:translate(2%,2%) rotate(3deg);}}
+  .container{position:relative;z-index:1;max-width:760px;margin:0 auto;padding:40px 20px 80px;}
+  .header{text-align:center;margin-bottom:60px;animation:fadeDown .8s ease both;}
+  .lang-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(232,197,71,.1);border:1px solid rgba(232,197,71,.3);
+    color:var(--accent);padding:6px 16px;border-radius:100px;font-size:12px;font-weight:600;letter-spacing:2px;text-transform:uppercase;margin-bottom:24px;}
+  h1{font-family:'Playfair Display',serif;font-size:clamp(32px,6vw,58px);font-weight:900;line-height:1.1;color:var(--text);margin-bottom:16px;}
+  h1 span{color:var(--accent);font-style:italic;}
+  .subtitle{color:var(--muted);font-size:15px;line-height:1.7;max-width:420px;margin:0 auto;}
+  .screen{display:none;}.screen.active{display:block;animation:fadeIn .5s ease;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:none;}}
+  @keyframes fadeDown{from{opacity:0;transform:translateY(-20px);}to{opacity:1;transform:none;}}
+  .levels-preview{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:40px 0;}
+  .level-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px 16px;text-align:center;transition:transform .2s,border-color .2s;}
+  .level-card:hover{transform:translateY(-4px);border-color:rgba(232,197,71,.3);}
+  .level-tag{display:inline-block;font-family:'Playfair Display',serif;font-size:24px;font-weight:700;margin-bottom:8px;}
+  .level-desc{font-size:11px;color:var(--muted);line-height:1.5;}
+  .btn{display:inline-flex;align-items:center;gap:10px;background:var(--accent);color:#0d0d0f;border:none;
+    padding:16px 40px;border-radius:100px;font-family:'Manrope',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:all .2s;letter-spacing:.5px;}
+  .btn:hover{background:#f5d060;transform:translateY(-2px);box-shadow:0 8px 30px rgba(232,197,71,.3);}
+  .btn:active{transform:translateY(0);}
+  .btn-outline{background:transparent;color:var(--text);border:1px solid var(--border);}
+  .btn-outline:hover{border-color:var(--accent);color:var(--accent);box-shadow:none;background:rgba(232,197,71,.05);}
+  .progress-wrap{margin-bottom:36px;}
+  .progress-info{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;font-size:13px;color:var(--muted);}
+  .progress-bar{height:3px;background:var(--border);border-radius:100px;overflow:hidden;}
+  .progress-fill{height:100%;background:var(--accent);border-radius:100px;transition:width .4s ease;}
+  .question-card{background:var(--card);border:1px solid var(--border);border-radius:24px;padding:36px;margin-bottom:20px;position:relative;overflow:hidden;}
+  .question-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--accent),transparent);opacity:.6;}
+  .q-meta{display:flex;align-items:center;gap:10px;margin-bottom:20px;}
+  .q-num{background:rgba(232,197,71,.12);color:var(--accent);width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;}
+  .q-category{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;}
+  .q-text{font-family:'Playfair Display',serif;font-size:clamp(17px,3vw,22px);line-height:1.5;color:var(--text);margin-bottom:8px;}
+  .q-hint{font-size:13px;color:var(--muted);}
+  .options{display:grid;gap:10px;margin-top:20px;}
+  .option{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px 20px;text-align:left;cursor:pointer;
+    font-family:'Manrope',sans-serif;font-size:14px;color:var(--text);transition:all .2s;display:flex;align-items:center;gap:14px;}
+  .option:hover:not(.disabled){border-color:rgba(232,197,71,.4);background:rgba(232,197,71,.05);transform:translateX(4px);}
+  .option.correct{border-color:var(--success);background:rgba(74,222,128,.08);color:var(--success);}
+  .option.wrong{border-color:var(--danger);background:rgba(248,113,113,.08);color:var(--danger);}
+  .option.disabled{cursor:default;pointer-events:none;}
+  .opt-letter{width:28px;height:28px;border-radius:8px;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;color:var(--muted);}
+  .option.correct .opt-letter{background:rgba(74,222,128,.2);color:var(--success);}
+  .option.wrong .opt-letter{background:rgba(248,113,113,.2);color:var(--danger);}
+  .option.selected .opt-letter{background:rgba(232,197,71,.2);color:var(--accent);}
+  .feedback-box{border-radius:14px;padding:14px 18px;font-size:13px;line-height:1.6;margin-top:12px;display:none;}
+  .feedback-box.show{display:block;animation:fadeIn .3s ease;}
+  .feedback-box.correct-fb{background:rgba(74,222,128,.07);border:1px solid rgba(74,222,128,.2);color:#86efac;}
+  .feedback-box.wrong-fb{background:rgba(248,113,113,.07);border:1px solid rgba(248,113,113,.2);color:#fca5a5;}
+  .q-nav{display:flex;justify-content:flex-end;gap:10px;margin-top:20px;}
+  .loading-screen{text-align:center;padding:80px 20px;}
+  .loader{width:56px;height:56px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 24px;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+  .loading-text{font-family:'Playfair Display',serif;font-size:22px;color:var(--text);margin-bottom:10px;}
+  .loading-sub{color:var(--muted);font-size:14px;}
+  .result-header{text-align:center;margin-bottom:40px;}
+  .result-level-badge{display:inline-flex;align-items:center;justify-content:center;width:100px;height:100px;border-radius:50%;
+    font-family:'Playfair Display',serif;font-size:36px;font-weight:900;margin:0 auto 20px;position:relative;}
+  .result-title{font-family:'Playfair Display',serif;font-size:clamp(24px,5vw,36px);font-weight:700;margin-bottom:8px;}
+  .result-sub{color:var(--muted);font-size:15px;line-height:1.6;}
+  .stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:32px 0;}
+  .stat-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px;text-align:center;}
+  .stat-val{font-family:'Playfair Display',serif;font-size:30px;font-weight:700;color:var(--accent);margin-bottom:4px;}
+  .stat-lbl{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;}
+  .ai-analysis{background:var(--card);border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:0 16px 16px 0;
+    padding:24px;margin-bottom:28px;font-size:14px;line-height:1.8;color:#d4d0c8;}
+  .ai-analysis h3{font-size:12px;text-transform:uppercase;letter-spacing:2px;color:var(--accent);margin-bottom:14px;font-weight:600;}
+  .roadmap{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:28px;margin-bottom:28px;}
+  .roadmap h3{font-family:'Playfair Display',serif;font-size:18px;margin-bottom:20px;color:var(--text);}
+  .roadmap-item{display:flex;gap:16px;align-items:flex-start;margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid var(--border);}
+  .roadmap-item:last-child{margin-bottom:0;padding-bottom:0;border-bottom:none;}
+  .roadmap-icon{width:36px;height:36px;border-radius:10px;background:rgba(232,197,71,.1);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+  .roadmap-text strong{display:block;font-size:14px;margin-bottom:4px;}
+  .roadmap-text span{font-size:13px;color:var(--muted);line-height:1.5;}
+  .result-actions{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;}
+  .promo-card{background:linear-gradient(135deg,rgba(232,197,71,.08),rgba(232,197,71,.03));border:1px solid rgba(232,197,71,.25);
+    border-radius:20px;padding:28px;text-align:center;margin-top:28px;}
+  .promo-card h3{font-family:'Playfair Display',serif;font-size:20px;margin-bottom:10px;color:var(--accent);}
+  .promo-card p{font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:20px;}
+  .stars{color:var(--accent);font-size:20px;margin-bottom:12px;letter-spacing:3px;}
+  .intro-stats{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:32px;}
+  .intro-stats-inner{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;text-align:center;}
+  .intro-stat-val{font-size:28px;font-family:'Playfair Display',serif;color:var(--accent);font-weight:700;}
+  .intro-stat-lbl{font-size:12px;color:var(--muted);margin-top:4px;}
+  @media(max-width:480px){
+    .levels-preview{grid-template-columns:repeat(2,1fr);}
+    .stats-grid{gap:8px;}.stat-val{font-size:24px;}
+    .question-card{padding:24px 20px;}
+    .result-actions{flex-direction:column;}
+    .result-actions .btn{justify-content:center;}
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <div class="lang-badge">🇷🇺 Rus Tili Testi</div>
+    <h1>Даражангизни<br><span>аниқланг</span></h1>
+    <p class="subtitle">AI ёрдамида рус тили даражангизни A1 дан C2 гача аниқланг ва шахсий ўқиш режасини олинг</p>
+  </div>
+
+  <!-- INTRO -->
+  <div id="introScreen" class="screen active">
+    <div class="levels-preview">
+      <div class="level-card"><div class="level-tag" style="color:var(--A1)">A1</div><div class="level-desc">Бошловчи</div></div>
+      <div class="level-card"><div class="level-tag" style="color:var(--A2)">A2</div><div class="level-desc">Бошланғич</div></div>
+      <div class="level-card"><div class="level-tag" style="color:var(--B1)">B1</div><div class="level-desc">Ўрта</div></div>
+      <div class="level-card"><div class="level-tag" style="color:var(--B2)">B2</div><div class="level-desc">Юқори ўрта</div></div>
+      <div class="level-card"><div class="level-tag" style="color:var(--C1)">C1</div><div class="level-desc">Илғор</div></div>
+      <div class="level-card"><div class="level-tag" style="color:var(--C2)">C2</div><div class="level-desc">Мукаммал</div></div>
+    </div>
+    <div class="intro-stats">
+      <div class="intro-stats-inner">
+        <div><div class="intro-stat-val">15</div><div class="intro-stat-lbl">Савол</div></div>
+        <div><div class="intro-stat-val">~5</div><div class="intro-stat-lbl">Дақиқа</div></div>
+        <div><div class="intro-stat-val">AI</div><div class="intro-stat-lbl">Таҳлил</div></div>
+      </div>
+    </div>
+    <div style="text-align:center;"><button class="btn" onclick="startQuiz()">Тестни бошлаш →</button></div>
+  </div>
+
+  <!-- QUIZ -->
+  <div id="quizScreen" class="screen">
+    <div class="progress-wrap">
+      <div class="progress-info">
+        <span id="qCounter">Савол 1 / 15</span>
+        <span id="scoreDisplay">✓ 0 та тўғри</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    </div>
+    <div class="question-card">
+      <div class="q-meta"><div class="q-num" id="qNum">1</div><div class="q-category" id="qCategory">Грамматика</div></div>
+      <div class="q-text" id="qText"></div>
+      <div class="q-hint" id="qHint"></div>
+    </div>
+    <div id="optionsContainer"></div>
+    <div class="feedback-box" id="feedbackBox"></div>
+    <div class="q-nav"><button class="btn" id="nextBtn" onclick="nextQuestion()" style="display:none;">Кейингиси →</button></div>
+  </div>
+
+  <!-- LOADING -->
+  <div id="loadingScreen" class="screen">
+    <div class="loading-screen">
+      <div class="loader"></div>
+      <div class="loading-text">AI таҳлил қилмоқда...</div>
+      <div class="loading-sub">Натижаларингизга асосан шахсий режа тузилмоқда</div>
+    </div>
+  </div>
+
+  <!-- RESULT -->
+  <div id="resultScreen" class="screen">
+    <div class="result-header">
+      <div class="result-level-badge" id="resultBadge"></div>
+      <div class="result-title" id="resultTitle"></div>
+      <div class="result-sub" id="resultSub"></div>
+    </div>
+    <div class="stats-grid">
+      <div class="stat-card"><div class="stat-val" id="statScore">-</div><div class="stat-lbl">Балл</div></div>
+      <div class="stat-card"><div class="stat-val" id="statCorrect">-</div><div class="stat-lbl">Тўғри</div></div>
+      <div class="stat-card"><div class="stat-val" id="statPercent">-</div><div class="stat-lbl">Фоиз</div></div>
+    </div>
+    <div class="ai-analysis"><h3>🤖 AI Таҳлили</h3><div id="aiAnalysisText"></div></div>
+    <div class="roadmap"><h3>📍 Сизнинг ўқиш йўлнамангиз</h3><div id="roadmapContent"></div></div>
+    <div class="result-actions">
+      <button class="btn" onclick="restartQuiz()">🔄 Қайта уриниб кўринг</button>
+      <button class="btn btn-outline" onclick="shareResult()">📤 Натижани улашинг</button>
+    </div>
+    <div class="promo-card">
+      <div class="stars">★★★★★</div>
+      <h3>Рус тилини ўрганишни давом эттиринг!</h3>
+      <p>Каналимизда ҳар куни фойдали постлар, реал мисоллар ва 15 дақиқалик машқлар билан даражангизни оширинг</p>
+      <button class="btn">📲 Каналга обуна бўлинг</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const questions=[
+  {level:"A1",category:"Лексика",text:"«Здравствуйте» — бу нима дегани?",hint:"Учрашганда айтиладиган сўз",options:["Хайр","Салом / Саломлашув","Раҳмат","Ҳа"],answer:1,feedback:"✓ «Здравствуйте» — расмий саломлашув. Дўстона вариант: «Привет»"},
+  {level:"A1",category:"Грамматика",text:"Бўш жойни тўлдиринг: «Это ___ книга» (мен — моя)",hint:"Эгалик олмоши",options:["моя","мой","моё","мои"],answer:0,feedback:"✓ «Книга» (китоб) — аёл жинси, шунинг учун «моя»"},
+  {level:"A2",category:"Грамматика",text:"Қайси жавоб тўғри? «Я ___ в Ташкенте»",hint:"Яшамоқ феъли — жил/жила/живу",options:["жил","живу","жить","живёт"],answer:1,feedback:"✓ «Живу» — мен яшайман (бугунги замон, 1-шахс)"},
+  {level:"A2",category:"Лексика",text:"«Сколько стоит?» — нима маъноси бор?",hint:"Дўконда қўлланиладиган ибора",options:["Қаерда?","Нархи қанча?","Нечта?","Қачон?"],answer:1,feedback:"✓ «Сколько стоит?» — нархни сўраш учун. Муҳим ибора!"},
+  {level:"B1",category:"Грамматика",text:"Тўғри шаклни танланг: «Я разговаривал ___ другом»",hint:"Кимдир билан — творительный падеж",options:["с другом","с другa","другом","с друга"],answer:0,feedback:"✓ «С другом» — «с» предлоги творительный падежни талаб қилади"},
+  {level:"B1",category:"Лексика",text:"«Несмотря на» ибораси нима маъно беради?",hint:"Қарама-қарши мазмунни боғловчи ибора",options:["Ундан ташқари","Қарамасдан","Шунинг учун","Масалан"],answer:1,feedback:"✓ «Несмотря на дождь, мы пошли» — ёмғирга қарамасдан бордик"},
+  {level:"B1",category:"Грамматика",text:"«Хорошо» ва «хороший» — қайси бири сифат?",hint:"Бири феъл ҳоли, бири сифат",options:["Хорошо","Хороший","Иккаласи ҳам сифат","Иккаласи ҳам феъл ҳоли"],answer:1,feedback:"✓ «Хороший» — сифат, «хорошо» — феъл ҳоли"},
+  {level:"B2",category:"Грамматика",text:"Қайси жумла тўғри?",hint:"Шарт маъноли конструкция",options:["Если бы я знал, я скажу тебе","Если бы я знал, я сказал бы тебе","Если я знал бы, я скажу тебе","Если бы я знаю, я скажу тебе"],answer:1,feedback:"✓ «Если бы... сказал бы» — ўтган замондаги шарт (субъюнктив)"},
+  {level:"B2",category:"Лексика",text:"«Изощрённый» сўзининг маъноси?",hint:"Мураккаб, нозик маъноли сўз",options:["Оддий","Нозик, мураккаб ишланган","Эски","Тез"],answer:1,feedback:"✓ «Изощрённый вкус» — нозик дид. Юқори услубдаги сўз"},
+  {level:"B2",category:"Грамматика",text:"«Будучи студентом, он много читал» — «будучи» нима?",hint:"Феъл шаклларидан бири",options:["Деепричастие","Причастие","Инфинитив","Сифат"],answer:0,feedback:"✓ «Будучи» — деепричастие (феъл ҳоли)"},
+  {level:"C1",category:"Лексика",text:"«Превалировать» феъли нима маъно билдиради?",hint:"Академик услубдаги феъл",options:["Яхшиланмоқ","Устун келмоқ, устунлик қилмоқ","Йўқолмоқ","Ўзгармоқ"],answer:1,feedback:"✓ «Превалировать» = устун бўлмоқ"},
+  {level:"C1",category:"Грамматика",text:"«Ввиду того что» қандай боғловчи?",hint:"Сабаб-оқибат муносабати",options:["Зидлов","Сабаб боғловчи","Шарт боғловчи","Мақсад боғловчи"],answer:1,feedback:"✓ «Ввиду того что» = «сабаби» / «туфайли». Расмий ёзма услубда қўлланилади"},
+  {level:"C1",category:"Услуб",text:"Қайси жумла расмий ёзма услубга мос?",hint:"Расмий ва норасмий услубни фарқланг",options:["Короче, всё хорошо получилось","В целом результат оказался удовлетворительным","Всё норм, не переживай","Это, ну, типа сработало"],answer:1,feedback:"✓ Расмий услубда: аниқ, бетарафроқ, тўлиқ жумлалар"},
+  {level:"C2",category:"Услуб",text:"«Тем не менее» ва «однако» — фарқи нима?",hint:"Нозик услубий фарқ",options:["Маъно жиҳатидан бир хил","«Тем не менее» кучлироқ зидлашувни, «однако» нейтраль","«Однако» оғзаки нутқда","Иккаласи бир хил"],answer:1,feedback:"✓ «Тем не менее» — кучлироқ, «однако» — нейтраль, ёзма услубда кенг қўлланилади"},
+  {level:"C2",category:"Лексика",text:"«Прецедент яратмоқ» — русча нечта?",hint:"Юридик ва расмий тил",options:["Создать прецедент","Сделать прецедент","Установить прецедент","A ва C ҳар иккаласи тўғри"],answer:3,feedback:"✓ «Создать» ва «установить прецедент» — иккаласи ҳам тўғри"}
+];
+
+const levelThresholds=[
+  {min:0,max:19,level:"A1",color:"#64b5f6",name:"Бошловчи"},
+  {min:20,max:35,level:"A2",color:"#4dd0e1",name:"Бошланғич"},
+  {min:36,max:52,level:"B1",color:"#81c784",name:"Ўрта"},
+  {min:53,max:69,level:"B2",color:"#ffb74d",name:"Юқори Ўрта"},
+  {min:70,max:84,level:"C1",color:"#f06292",name:"Илғор"},
+  {min:85,max:100,level:"C2",color:"#ce93d8",name:"Мукаммал"}
+];
+const qScores={A1:4,A2:5,B1:7,B2:9,C1:11,C2:13};
+
+let currentQ=0,score=0,correctCount=0,answered=false,userAnswers=[];
+
+function startQuiz(){
+  showScreen('quizScreen');
+  currentQ=0;score=0;correctCount=0;userAnswers=[];
+  renderQuestion();
+}
+
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function renderQuestion(){
+  answered=false;
+  const q=questions[currentQ],total=questions.length;
+  document.getElementById('qCounter').textContent=`Савол ${currentQ+1} / ${total}`;
+  document.getElementById('scoreDisplay').textContent=`✓ ${correctCount} та тўғри`;
+  document.getElementById('progressFill').style.width=`${(currentQ/total)*100}%`;
+  document.getElementById('qNum').textContent=currentQ+1;
+  document.getElementById('qCategory').textContent=`${q.level} • ${q.category}`;
+  document.getElementById('qText').textContent=q.text;
+  document.getElementById('qHint').textContent=q.hint?`💡 ${q.hint}`:'';
+  const fb=document.getElementById('feedbackBox');
+  fb.className='feedback-box';fb.textContent='';
+  document.getElementById('nextBtn').style.display='none';
+  const container=document.getElementById('optionsContainer');
+  container.innerHTML='';
+  const div=document.createElement('div');
+  div.className='options';
+  const letters=['A','B','C','D'];
+  q.options.forEach((opt,i)=>{
+    const btn=document.createElement('button');
+    btn.className='option';
+    btn.innerHTML=`<span class="opt-letter">${letters[i]}</span> ${opt}`;
+    btn.onclick=()=>selectAnswer(i,btn);
+    div.appendChild(btn);
+  });
+  container.appendChild(div);
+}
+
+function selectAnswer(chosen){
+  if(answered)return;
+  answered=true;
+  const q=questions[currentQ];
+  const isCorrect=chosen===q.answer;
+  document.querySelectorAll('.option').forEach((b,i)=>{
+    b.classList.add('disabled');
+    if(i===q.answer)b.classList.add('correct');
+    if(i===chosen&&!isCorrect)b.classList.add('wrong');
+  });
+  if(isCorrect){score+=qScores[q.level];correctCount++;}
+  userAnswers.push({q:currentQ,correct:isCorrect,level:q.level});
+  const fb=document.getElementById('feedbackBox');
+  fb.className=`feedback-box show ${isCorrect?'correct-fb':'wrong-fb'}`;
+  fb.textContent=isCorrect?q.feedback:`✗ Тўғри жавоб: «${q.options[q.answer]}». ${q.feedback.replace('✓ ','')}`;
+  document.getElementById('nextBtn').style.display='flex';
+}
+
+function nextQuestion(){
+  currentQ++;
+  if(currentQ>=questions.length)finishQuiz();
+  else renderQuestion();
+}
+
+function finishQuiz(){
+  showScreen('loadingScreen');
+  setTimeout(generateResult,2200);
+}
+
+function getLevel(pct){return levelThresholds.find(l=>pct>=l.min&&pct<=l.max)||levelThresholds[0];}
+
+function generateResult(){
+  const maxScore=questions.reduce((s,q)=>s+qScores[q.level],0);
+  const pct=Math.round((score/maxScore)*100);
+  const lvl=getLevel(pct);
+  const byLevel={};
+  userAnswers.forEach(a=>{
+    if(!byLevel[a.level])byLevel[a.level]={total:0,correct:0};
+    byLevel[a.level].total++;if(a.correct)byLevel[a.level].correct++;
+  });
+  const weak=Object.entries(byLevel).filter(([,v])=>v.correct/v.total<0.6).map(([k])=>k);
+  const badge=document.getElementById('resultBadge');
+  badge.textContent=lvl.level;
+  badge.style.background=`${lvl.color}18`;
+  badge.style.color=lvl.color;
+  badge.style.border=`2px solid ${lvl.color}`;
+  document.getElementById('resultTitle').textContent=`${lvl.level} — ${lvl.name}`;
+  document.getElementById('resultSub').textContent=getLevelDesc(lvl.level);
+  document.getElementById('statScore').textContent=score;
+  document.getElementById('statCorrect').textContent=`${correctCount}/15`;
+  document.getElementById('statPercent').textContent=`${pct}%`;
+  document.getElementById('aiAnalysisText').innerHTML=getAIAnalysis(lvl.level,pct,weak);
+  document.getElementById('roadmapContent').innerHTML=getRoadmap(lvl.level);
+  showScreen('resultScreen');
+}
+
+function getLevelDesc(l){
+  return{A1:"Сиз рус тилини эндигина ўрганаётирсиз. Асосий сўзлар ва ибораларни биласиз.",
+    A2:"Сиз кундалик ҳаётдаги оддий гапларни тушунасиз ва сўзлаша олсиз.",
+    B1:"Сиз таниш мавзуларда мустақил мулоқот қила оласиз. Жуда яхши прогресс!",
+    B2:"Сиз мураккаб матнларни тушунасиз ва она тилидагилар билан мулоқот қила оласиз.",
+    C1:"Сиз тилни мўл-кўл ва самарали ишлата оласиз — илмий ва касбий соҳаларда ҳам.",
+    C2:"Мукаммал даража! Сиз рус тилини она тилидагилар каби эгаллагансиз."}[l]||'';
+}
+
+function getAIAnalysis(level,pct,weak){
+  let html=`<p>Сизнинг умумий натижангиз <strong>${pct}%</strong> — бу <strong>${level}</strong> даражасига тўғри келади.</p><br>`;
+  if(weak.length)html+=`<p>📌 Кучайтириш керак: <strong>${weak.join(', ')}</strong> даражасидаги материаллар.</p>`;
+  else html+=`<p>🌟 Барча соҳаларда яхши натижа кўрсатдингиз!</p>`;
+  const recs={A1:"Кунига 15-20 дақиқа янги сўзларни ёдланг. Русча мультфильмлар ва болалар видеоларини томоша қилинг.",
+    A2:"Оддий диалогларни машқ қилинг. Русча қўшиқлар тинглаш самаралидир.",
+    B1:"Подкастлар ва видеоларни субтитр билан томоша қилинг. Куннинг ишларини русча ёзиб боринг.",
+    B2:"Газета мақолалари ўқинг. Она тили сўзловчилари билан мулоқот практикаси ўтказинг.",
+    C1:"Академик матнларни ўқинг. Мураккаб мавзуларда фикр ёзинг ва тузатинг.",
+    C2:"Тилнинг нозик жиҳатларини — услублар, диалектларни ўрганинг."};
+  html+=`<br><p>💡 <strong>Тавсия:</strong> ${recs[level]||''}</p>`;
+  return html;
+}
+
+function getRoadmap(level){
+  const steps={
+    A1:[{icon:"📚",t:"Асосий 500 сўз",d:"Кунига 10 сўздан ёдланг"},{icon:"🗣️",t:"Фонетика",d:"Рус алфавити ва товушлари"},{icon:"📝",t:"Оддий жумлалар",d:"Мен/сен/у + феъл формалари"},{icon:"🎯",t:"A2 га ўтиш",d:"3-4 ойда A2 даражасига чиқинг"}],
+    A2:[{icon:"🎙️",t:"Диалог машқлари",d:"Дўкон, меҳмонхона, транспортда сўзлашув"},{icon:"📖",t:"Грамматика асослари",d:"Падежлар — 6 та падежни ўрганинг"},{icon:"🎬",t:"Медиа",d:"Субтитр билан русча сериаллар кўринг"},{icon:"🎯",t:"B1 га ўтиш",d:"4-6 ойда B1 даражасига чиқинг"}],
+    B1:[{icon:"📰",t:"Матн ўқиш",d:"Оддий янгиликлар ва мақолалар"},{icon:"✍️",t:"Ёзиш практикаси",d:"Кунлик кундалик юритинг — русча"},{icon:"🎧",t:"Эшитиш",d:"Подкаст ва радио — кунига 20 дақиқа"},{icon:"🎯",t:"B2 га ўтиш",d:"6-8 ойда B2 даражасига чиқинг"}],
+    B2:[{icon:"📚",t:"Адабий матнлар",d:"Русча романлар ва ҳикоялар"},{icon:"💬",t:"Она тили сўзловчилари",d:"Language exchange ёки онлайн конверсация"},{icon:"🎭",t:"Мураккаб мавзулар",d:"Сиёсат, иқтисод, фан ҳақида мулоқот"},{icon:"🎯",t:"C1 га ўтиш",d:"8-12 ойда C1 даражасига чиқинг"}],
+    C1:[{icon:"🏛️",t:"Академик тил",d:"Илмий мақолалар ва монографиялар"},{icon:"✒️",t:"Мукаммал ёзув",d:"Расмий ва норасмий услублар"},{icon:"🎤",t:"Нутқ нозикликлари",d:"Идиомалар, метафоралар"},{icon:"🎯",t:"C2 га ўтиш",d:"12+ ойда C2 даражасига чиқинг"}],
+    C2:[{icon:"🌟",t:"Мукаммал даража!",d:"Сиз рус тилини пухта биласиз"},{icon:"📜",t:"Сертификат",d:"ТРКИ имтиҳонини топширинг"},{icon:"🎓",t:"Тилни ўргатинг",d:"Бошқаларга ёрдам бериш — энг яхши практика"}]
+  };
+  return(steps[level]||steps.B1).map(s=>`<div class="roadmap-item"><div class="roadmap-icon">${s.icon}</div><div class="roadmap-text"><strong>${s.t}</strong><span>${s.d}</span></div></div>`).join('');
+}
+
+function restartQuiz(){startQuiz();}
+function shareResult(){
+  const lvl=document.getElementById('resultTitle').textContent;
+  const pct=document.getElementById('statPercent').textContent;
+  const text=`Мен рус тили тестини топширдим! Натижам: ${lvl} (${pct}) 🇷🇺`;
+  if(navigator.share)navigator.share({title:'Рус тили даражам',text});
+  else navigator.clipboard?.writeText(text).then(()=>alert('Матн нусхаланди!'));
+}
+</script>
+</body>
+</html>
