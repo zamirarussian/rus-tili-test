@@ -606,6 +606,7 @@ function showResult(){
 
     <div class="res-actions">
       ${nextBtn}
+      <button class="btn" onclick="shareResult('${curLevel}', ${pct})" style="background:#229ED9;">📤 Natijani ulashing</button>
       <button class="btn btn-outline" onclick="goHome()">← Boshqa daraja tanlash</button>
     </div>
 
@@ -619,6 +620,25 @@ function showResult(){
 
   document.getElementById('resultWrap').innerHTML=html;
   window.scrollTo(0,0);
+}
+
+function shareResult(level, pct){
+  const msgs = {
+    A1: `Rus tili darajamni bilib oldim! 😅\nNatija: A1 — ${pct}%\n\nEndigina boshlayapman, lekin bu boshlanish! 🌱\n\nSiz ham @zamira_russian kanali orqali darajangizni bilib oling 👇\nhttps://siddiqovzayniddin-pixel.github.io/rus-tili-test/`,
+    A2: `Rus tili darajamni bilib oldim! 🙂\nNatija: A2 — ${pct}%\n\nOddiy gaplasha olaman, lekin hali o'sish bor 📈\n\nSiz ham @zamira_russian kanali orqali darajangizni bilib oling 👇\nhttps://siddiqovzayniddin-pixel.github.io/rus-tili-test/`,
+    B1: `Rus tili darajamni bilib oldim! 😏\nNatija: B1 — ${pct}%\n\nO'rtachaman... lekin B2 ko'rinib qoldi 👀\n\nSiz ham @zamira_russian kanali orqali darajangizni bilib oling 👇\nhttps://siddiqovzayniddin-pixel.github.io/rus-tili-test/`,
+    B2: `Rus tili darajamni bilib oldim! 💪\nNatija: B2 — ${pct}%\n\nErkin gaplashaman, faqat nozik joylar qoldi 😎\n\nSiz ham @zamira_russian kanali orqali darajangizni bilib oling 👇\nhttps://siddiqovzayniddin-pixel.github.io/rus-tili-test/`,
+    C1: `Rus tili darajamni bilib oldim! 🏆\nNatija: C1 — ${pct}%\n\nIlg'or darajadasiz — bu zo'r! 🔥\n\nSiz ham @zamira_russian kanali orqali darajangizni bilib oling 👇\nhttps://siddiqovzayniddin-pixel.github.io/rus-tili-test/`,
+    C2: `Rus tili darajamni bilib oldim! ⭐\nNatija: C2 — ${pct}%\n\nDeyarli ona tili darajasi — ajoyib! 🎉\n\nSiz ham @zamira_russian kanali orqali darajangizni bilib oling 👇\nhttps://siddiqovzayniddin-pixel.github.io/rus-tili-test/`,
+  };
+  const txt = msgs[level] || `Rus tili darajam: ${level} — ${pct}%\n\n@zamira_russian kanali orqali siz ham bilib oling:\nhttps://siddiqovzayniddin-pixel.github.io/rus-tili-test/`;
+  if(navigator.share){
+    navigator.share({text: txt});
+  } else {
+    navigator.clipboard?.writeText(txt).then(()=>{
+      alert('Matn nusxalandi! Telegram, Instagram yoki WhatsApp ga joylashtiring 👍');
+    });
+  }
 }
 
 function goHome(){
